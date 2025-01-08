@@ -1,21 +1,26 @@
 import java.util.*;
 class Solution {
     public int[] solution(int[] arr, int divisor) {
-        int n = arr.length;
-        LinkedList<Integer> result = new LinkedList<>();
-        for(int i = 0; i < n; i++){
+        int idx = 0;
+        int num =0 ;
+        for(int i = 0 ; i < arr.length; i++){
             if(arr[i] % divisor == 0){
-                result.add(arr[i]);
+                idx++;
             }
         }
-        Collections.sort(result);
-        int[] ans = new int[result.size()];
-        for(int i= 0; i < result.size(); i++){
-            ans[i] = result.get(i);
+        if(idx == 0){
+            int[] ans = {-1};
+            return ans;
         }
-        if(result.size() == 0){
-            ans = new int[]{-1};
+        
+        int[] ans = new int[idx];
+        for(int i = 0; i < arr.length; i++){
+            if(arr[i] % divisor == 0){
+                ans[num] = arr[i];
+                num++;
+            }
         }
+        Arrays.sort(ans);
         return ans;
     }
 }
