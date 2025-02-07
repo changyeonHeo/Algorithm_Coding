@@ -9,15 +9,14 @@ public class Main{
         
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
-        int[] arr = new int[n+1];
         
+        int[] arr = new int[n+1];
         st = new StringTokenizer(br.readLine());
-        for(int i =1; i <= n; i++){
+        for(int i =1 ; i <= n; i++){
             arr[0] = 0;
             arr[i] = arr[i-1] + Integer.parseInt(st.nextToken());
         }
-        
-        for(int i = 0; i < m; i++){
+        for(int i =0; i < m; i++){
             st = new StringTokenizer(br.readLine());
             int start = Integer.parseInt(st.nextToken());
             int end = Integer.parseInt(st.nextToken());
