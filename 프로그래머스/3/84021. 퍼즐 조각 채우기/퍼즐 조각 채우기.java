@@ -1,147 +1,115 @@
 import java.util.*;
 class Solution {
+    int[] dx = {-1,0,1,0};
+    int[] dy = {0,1,0,-1};
     public int solution(int[][] game_board, int[][] table) {
-        List<List<int[]>> emptySpace = new ArrayList<>();
-        List<List<int[]>> blocks = new ArrayList<>();
+        int answer = -1;
+        boolean[][] visitedTable = new boolean[table.length][table.length];
+        boolean[][] visitedBoard = new boolean[game_board.length][game_board.length];
+        List<List<int[]>> boardList = new ArrayList<>();
+        List<List<int[]>> tableList = new ArrayList<>();
         
-        int row = game_board.length;
-        int col = game_board[0].length;
-        boolean[][] visited = new boolean[row][col];
-        for(int i =0; i < row;i++){
-            for(int j =0 ; j < col; j++){
-                if(game_board[i][j] == 0 && !visited[i][j]){
-                    emptySpace.add(extractShape(i,j,row,col,game_board,visited,0));
+        for(int i =0; i < table.length; i++){
+            for(int j = 0; j< table.length; j++){
+                if(table[i][j] == 1 && !visitedTable[i][j]){
+                    bfs(i,j,visitedTable,table,1,tableList);
+                }
+                if(game_board[i][j] == 0 && !visitedBoard[i][j]){
+                    bfs(i,j,visitedBoard,game_board,0,boardList);
                 }
             }
         }
-        row = table.length;
-        col = table[0].length;
-        visited = new boolean[row][col];
-        for(int i =0; i < row; i++){
-            for(int j =0; j< col; j++){
-                if(table[i][j] ==1 && !visited[i][j]){
-                    blocks.add(extractShape(i,j,row,col,table,visited,1));
-                }
-            }
-        }
-        return match(emptySpace, blocks);
+        answer = findBlock(boardList,tableList);
+        return answer;
     }
-    private static int[][] DIR = {
-        {0,1},
-        {0,-1},
-        {1,0},
-        {-1,0}
-    };
-    private List<int[]> extractShape(int startX, int startY, int row, int col, int[][] board, boolean[][] visited, int target){
-        List<int[]> result = new ArrayList<>();
-        Deque<int[]> que = new ArrayDeque<>();
-        que.add(new int[]{startX, startY});
-        visited[startX][startY] = true;
-        
-        while(!que.isEmpty()){
-            int[] cur = que.poll();
-            result.add(cur);
-            
-            for(int i =0; i < 4; i++){
-                int dx = cur[0] + DIR[i][0];
-                int dy = cur[1] + DIR[i][1];
+    public int findBlock(List<List<int[]>> board, List<List<int[]>> table){
+        int size = 0;
+        int tableLen = table.size();
+        int boardLen = board.size();
+        boolean[] visitedBoard = new boolean[boardLen];
+        for(int i =0; i < tableLen;i++){
+            List<int[]> tablePoints = table.get(i);
+            for(int j =0; j < boardLen; j++){
+                List<int[]> boardPoints = board.get(j);
                 
-                if(dx < 0 || dy < 0 || dx >= row || dy >= col){
-                    continue;
+                if(tablePoints.size() == boardPoints.size() && !visitedBoard[j]){
+                    if(isRotate(boardPoints, tablePoints)){
+                        size+= tablePoints.size();
+                        visitedBoard[j] = true;
+                        break;
+                    }                    
                 }
-                if(visited[dx][dy]){
-                    continue;
-                }
-                if(board[dx][dy] != target){
-                    continue;
-                }
-                visited[dx][dy] = true;
-                que.add(new int[]{dx,dy});
             }
         }
-        return normalize(result);
+        return size;
     }
-    private List<int[]> normalize(List<int[]> data){
-        if(data == null || data.isEmpty()){
-            return data;
-        }
-        int minX = Integer.MAX_VALUE;
-        int minY = Integer.MAX_VALUE;
-        
-        for(int[] d : data){
-            minX = Math.min(minX, d[0]);
-            minY = Math.min(minY, d[1]);
-        }
-        for(int[] d : data){
-            d[0] -= minX;
-            d[1] -= minY;
-        }
-        return data;
-    }    
-    private int match(List<List<int[]>> emptySpace, List<List<int[]>> blocks){
-        int result = 0;
-        boolean[] used = new boolean[blocks.size()];
-        for(int i = 0; i< emptySpace.size();i++){
-            List<int[]> space = emptySpace.get(i);
-            for(int j =0; j < blocks.size(); j++){
-                if(used[j]){
-                    continue;
-                }
-                List<int[]> block = blocks.get(j);
-                if(rotateAndCompare(space,block)){
-                    result += block.size();
-                    used[j] = true;
+    
+    public boolean isRotate(List<int[]> board, List<int[]> table){
+        boolean isCollect = false;
+        board.sort((o1,o2)->{
+           return o1[0] > o2[0]?1:o1[0] < o2[0]? -1 : Integer.compare(o1[1],o2[1]); 
+        });
+        for(int i= 0; i< 4; i++){
+            table.sort((o1,o2)->{
+               return o1[0] > o2[0]?1 : o1[0] < o2[0]? -1 :Integer.compare(o1[1],o2[1]); 
+            });
+            int nearZeroX = table.get(0)[0];
+            int nearZeroY = table.get(0)[1];
+            
+            for(int j = 0; j < table.size(); j++){
+                table.get(j)[0] -= nearZeroX;
+                table.get(j)[1] -= nearZeroY;
+            }
+            boolean isCollectPoint = true;
+            for(int j = 0; j < board.size(); j++){
+                int[] boardPoint = board.get(j);
+                int[] tablePoint = table.get(j);
+                
+                if(boardPoint[0] != tablePoint[0] || boardPoint[1] != tablePoint[1]){
+                    isCollectPoint = false;
                     break;
                 }
             }
-        }
-        return result;
-    }
-    private boolean rotateAndCompare(List<int[]> space, List<int[]> block){
-        if(space.size() != block.size()){
-            return false;
-        }
-        List<int[]> rotated = block;
-        for(int i =0; i< 4; i++){
-            if(compare(space,rotated)){
-                return true;
-            }
-            if(i < 3){
-                rotated = rotate(rotated);
+            if(isCollectPoint){
+                isCollect = true;
+                break;
+            }else{
+                for(int j =0; j < table.size(); j++){
+                    int temp = table.get(j)[0];
+                    table.get(j)[0] = table.get(j)[1];
+                    table.get(j)[1] = -temp;
+                }
             }
         }
-        return false;
+        return isCollect;
     }
-    
-    private List<int[]> rotate(List<int[]> block){
-        List<int[]> result = new ArrayList<>();
-        int minX = Integer.MAX_VALUE;
-        int minY = Integer.MAX_VALUE;
-        for(int[] b : block){
-            int x = b[1];
-            int y = - b[0];
-            result.add(new int[] {x,y});
-            
-            if(x< minX) minX = x;
-            if(y< minY) minY = y;
-        }
-        for(int[] r: result){
-            r[0] -= minX;
-            r[1] -= minY;
-        }
-        return result;
-    }
-    private boolean compare(List<int[]> space, List<int[]> block){
-        Collections.sort(space,(a,b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
-        Collections.sort(block,(a,b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+    public void bfs(int currentX, int currentY,boolean[][] visited, int[][] graph, int blockOrEmpty, List<List<int[]>> list){
+        Queue<int[]> queue = new LinkedList<>();
+        visited[currentX][currentY] = true;
+        queue.add(new int[]{currentX,currentY});
+        List<int[]> subList = new ArrayList<>();
+        subList.add(new int[]{currentX-currentX,currentY-currentY});
         
-        for(int i =0; i < space.size(); i++){
-            int[] s = space.get(i);
-            int[] b = block.get(i);
-            if(s[0] != b[0] || s[1] != b[1]){
-                return false;
+        while(!queue.isEmpty()){
+            int[] pop = queue.remove();
+            int popX = pop[0];
+            int popY = pop[1];
+            
+            for(int i =0; i < 4; i++){
+                int nextX = popX + dx[i];
+                int nextY = popY + dy[i];
+                
+                if(nextX <0 || nextX >= graph.length || nextY < 0 || nextY >= graph.length){
+                    continue;
+                }
+                if(!visited[nextX][nextY] && graph[nextX][nextY] == blockOrEmpty){
+                    visited[nextX][nextY] = true;
+                    queue.add(new int[]{nextX, nextY});
+                    subList.add(new int[]{nextX - currentX, nextY - currentY});
+                    
+                }
             }
         }
-        return true;
+        list.add(subList);
     }
 }
