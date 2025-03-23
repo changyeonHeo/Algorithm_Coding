@@ -3,9 +3,9 @@ class Solution {
     public int solution(int n, int[][] computers) {
         int cnt = 0;
         boolean[] visited = new boolean[n];
-        for(int i =0; i< n;i++){
+        for(int i = 0; i< n; i++){
             if(!visited[i]){
-                bfs(computers,visited,i);
+                bfs(computers, visited, i);
                 cnt++;
             }
         }
@@ -18,7 +18,7 @@ class Solution {
         
         while(!queue.isEmpty()){
             Integer w = queue.poll();
-            for(int i =0; i < computers.length; i++){
+            for(int i =0; i< computers.length; i++){
                 if(computers[w][i] == 1 && !visited[i]){
                     visited[i] = true;
                     queue.add(i);
