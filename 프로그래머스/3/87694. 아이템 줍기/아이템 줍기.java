@@ -9,12 +9,12 @@ class Solution {
         for(int[] r : rectangle){
             fill(2*r[0], 2*r[1], 2*r[2], 2*r[3]);
         }
-        bfs(2*characterX, 2*characterY,2*itemX,2*itemY);
+        bfs(2*characterX, 2*characterY, 2*itemX, 2*itemY);
         return answer;
     }
     public void fill(int x1, int y1, int x2, int y2){
-        for(int i =x1; i<=x2; i++){
-            for(int j = y1; j <= y2; j++){
+        for(int i =x1; i<= x2; i++){
+            for(int j =y1; j <= y2; j++){
                 if(map[i][j] == 2){
                     continue;
                 }
@@ -25,7 +25,6 @@ class Solution {
             }
         }
     }
-    
     public void bfs(int startX, int startY, int itemX, int itemY){
         Queue<int[]> q = new LinkedList<>();
         q.offer(new int[]{startX, startY});
@@ -40,14 +39,14 @@ class Solution {
                     continue;
                 }
                 if(map[moveX][moveY] == 1 && cost[moveX][moveY] == 0){
-                    cost[moveX][moveY] = cost[move[0]][move[1]]+1;
-                    q.offer(new int[]{moveX,moveY});
+                    cost[moveX][moveY] = cost[move[0]][move[1]] +1;
+                    q.offer(new int[]{moveX, moveY});
                 }
             }
         }
         answer = cost[itemX][itemY]/2;
     }
     public boolean validation(int x, int y){
-        return(0>x || 0 > y || x>100 || y > 100);
+        return(0>x || 0 > y || x> 100 || y > 100);
     }
 }
