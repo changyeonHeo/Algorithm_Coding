@@ -5,17 +5,17 @@ class Solution {
         List<Integer> list = new ArrayList<>();
         Queue<Integer> q = new LinkedList<>();
         
-        for(int i =0; i < progresses.length;i++){
+        for(int i =0; i < progresses.length; i++){
             if((100 - progresses[i]) % speeds[i] == 0){
-                q.add((100-progresses[i]) / speeds[i]);
+                q.add((100 - progresses[i]) / speeds[i]);
             }else{
-                q.add((100-progresses[i]) / speeds[i] + 1); 
+                q.add((100 - progresses[i]) / speeds[i] + 1);
             }
         }
         int x = q.poll();
         int count = 1;
         while(!q.isEmpty()){
-            if(x >= q.peek()){
+            if(x>=q.peek()){
                 count++;
                 q.poll();
             }else{
