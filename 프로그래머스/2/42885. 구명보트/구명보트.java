@@ -12,7 +12,6 @@ class Solution {
             }
             j--;
             answer++;
-            
         }
         return answer;
     }
