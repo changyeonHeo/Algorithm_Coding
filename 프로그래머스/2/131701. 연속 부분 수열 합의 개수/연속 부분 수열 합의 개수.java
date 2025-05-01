@@ -5,13 +5,13 @@ class Solution {
         int[] extend = new int[elements.length * 2];
         for(int i =0; i < elements.length; i++){
             extend[i] = elements[i];
-            extend[i+elements.length] = elements[i];
+            extend[elements.length+i] = elements[i];
         }
         for(int length = 1; length <= elements.length; length++){
-            for(int start = 0; start < elements.length; start++){
-                int sum =0;
+            for(int start = 0; start<elements.length; start++){
+                int sum = 0;
                 for(int i =0; i < length; i++){
-                    sum += extend[start+i];
+                    sum += extend[start + i];
                 }
                 sumSet.add(sum);
             }
