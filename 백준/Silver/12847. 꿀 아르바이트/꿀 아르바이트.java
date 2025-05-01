@@ -1,6 +1,5 @@
 import java.util.*;
 import java.io.*;
-
 public class Main{
     public static void main(String[] args)throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -12,18 +11,18 @@ public class Main{
         long[] arr = new long[n];
         st = new StringTokenizer(br.readLine());
         for(int i =0; i < n; i++){
-            arr[i] = Long.parseLong(st.nextToken());
+            arr[i] = Integer.parseInt(st.nextToken());
         }
         long sum = 0;
         for(int i =0; i < m; i++){
             sum += arr[i];
         }
         long max = sum;
-        for(int j =0; j +m <n;j++){
+        for(int j =0; j +m < n; j++){
             sum -= arr[j];
             sum += arr[j+m];
             max = Math.max(max, sum);
         }
         System.out.print(max);
-     }
+    }
 }
