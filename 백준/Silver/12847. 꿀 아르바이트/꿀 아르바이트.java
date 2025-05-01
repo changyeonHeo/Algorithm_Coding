@@ -11,7 +11,7 @@ public class Main{
         
         long[] arr = new long[n];
         st = new StringTokenizer(br.readLine());
-        for(int i =0 ; i< n; i++){
+        for(int i =0; i < n; i++){
             arr[i] = Long.parseLong(st.nextToken());
         }
         long sum = 0;
@@ -19,11 +19,11 @@ public class Main{
             sum += arr[i];
         }
         long max = sum;
-        for(int j = 0; j+m < n; j++){
+        for(int j =0; j +m <n;j++){
             sum -= arr[j];
             sum += arr[j+m];
             max = Math.max(max, sum);
         }
-        System.out.println(max);
-    }
+        System.out.print(max);
+     }
 }
