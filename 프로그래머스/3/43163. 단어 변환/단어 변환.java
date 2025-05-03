@@ -1,6 +1,5 @@
 import java.util.*;
 class Solution {
-    
     public int solution(String begin, String target, String[] words) {
         int answer = 0;
         Queue<String> queue = new LinkedList<>();
@@ -8,7 +7,6 @@ class Solution {
         if(!set.contains(target)){
             return 0;
         }
-        
         queue.offer(begin);
         set.remove(begin);
         
@@ -27,11 +25,11 @@ class Solution {
             }
             answer++;
         }
-        return  0;
+        return 0;
     }
     private boolean canConvert(String word1, String word2){
         int diffCnt = 0;
-        for(int i =0; i<word1.length(); i++){
+        for(int i =0; i < word1.length(); i++){
             if(word1.charAt(i) != word2.charAt(i)){
                 diffCnt++;
             }
