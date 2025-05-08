@@ -10,7 +10,7 @@ class Solution {
         List<List<int[]>> tableList = new ArrayList<>();
         
         for(int i =0; i < table.length; i++){
-            for(int j = 0; j< table.length; j++){
+            for(int j =0; j < table.length; j++){
                 if(table[i][j] == 1 && !visitedTable[i][j]){
                     bfs(i,j,visitedTable,table,1,tableList);
                 }
@@ -27,36 +27,34 @@ class Solution {
         int tableLen = table.size();
         int boardLen = board.size();
         boolean[] visitedBoard = new boolean[boardLen];
-        for(int i =0; i < tableLen;i++){
+        for(int i =0; i < tableLen; i++){
             List<int[]> tablePoints = table.get(i);
-            for(int j =0; j < boardLen; j++){
+            for(int j =0 ; j < boardLen; j++){
                 List<int[]> boardPoints = board.get(j);
-                
                 if(tablePoints.size() == boardPoints.size() && !visitedBoard[j]){
                     if(isRotate(boardPoints, tablePoints)){
-                        size+= tablePoints.size();
+                        size += tablePoints.size();
                         visitedBoard[j] = true;
                         break;
-                    }                    
+                    }
                 }
             }
         }
         return size;
     }
-    
     public boolean isRotate(List<int[]> board, List<int[]> table){
         boolean isCollect = false;
         board.sort((o1,o2)->{
            return o1[0] > o2[0]?1:o1[0] < o2[0]? -1 : Integer.compare(o1[1],o2[1]); 
         });
-        for(int i= 0; i< 4; i++){
+        for(int i =0; i < 4; i++){
             table.sort((o1,o2)->{
-               return o1[0] > o2[0]?1 : o1[0] < o2[0]? -1 :Integer.compare(o1[1],o2[1]); 
+               return o1[0] > o2[0]? 1 : o1[0] < o2[0]? -1 : Integer.compare(o1[1],o2[1]); 
             });
             int nearZeroX = table.get(0)[0];
             int nearZeroY = table.get(0)[1];
             
-            for(int j = 0; j < table.size(); j++){
+            for(int j =0; j < table.size(); j++){
                 table.get(j)[0] -= nearZeroX;
                 table.get(j)[1] -= nearZeroY;
             }
@@ -83,10 +81,10 @@ class Solution {
         }
         return isCollect;
     }
-    public void bfs(int currentX, int currentY,boolean[][] visited, int[][] graph, int blockOrEmpty, List<List<int[]>> list){
+    public void bfs(int currentX, int currentY, boolean[][] visited, int[][] graph, int blockOrEmpty, List<List<int[]>> list){
         Queue<int[]> queue = new LinkedList<>();
         visited[currentX][currentY] = true;
-        queue.add(new int[]{currentX,currentY});
+        queue.add(new int[]{currentX, currentY});
         List<int[]> subList = new ArrayList<>();
         subList.add(new int[]{currentX-currentX,currentY-currentY});
         
@@ -99,14 +97,13 @@ class Solution {
                 int nextX = popX + dx[i];
                 int nextY = popY + dy[i];
                 
-                if(nextX <0 || nextX >= graph.length || nextY < 0 || nextY >= graph.length){
+                if(nextX <0|| nextX >= graph.length || nextY < 0 || nextY >= graph.length){
                     continue;
                 }
                 if(!visited[nextX][nextY] && graph[nextX][nextY] == blockOrEmpty){
                     visited[nextX][nextY] = true;
                     queue.add(new int[]{nextX, nextY});
-                    subList.add(new int[]{nextX - currentX, nextY - currentY});
-                    
+                    subList.add(new int[]{nextX - currentX,nextY - currentY});
                 }
             }
         }
