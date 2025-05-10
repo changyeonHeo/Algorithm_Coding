@@ -6,6 +6,7 @@ class Solution {
         
         for(int i =0; i < files.length; i++){
             String s = files[i];
+            
             int startNumIdx = -1;
             boolean first = true;
             int endNumIdx = -1;
@@ -24,10 +25,10 @@ class Solution {
                     }
                 }
             }
-            endNumIdx = startNumIdx + size - 1;
+            endNumIdx = startNumIdx + size -1;
             
             String head = s.substring(0,startNumIdx);
-            String number = s.substring(startNumIdx,endNumIdx+1);
+            String number = s.substring(startNumIdx, endNumIdx + 1);
             String tail = s.substring(endNumIdx+1);
             
             answer2[i][0] = head;
@@ -35,14 +36,14 @@ class Solution {
             answer2[i][2] = tail;
         }
         Arrays.sort(answer2,(o1,o2)->{
-            if(o1[0].toLowerCase().compareTo(o2[0].toLowerCase(Locale.ROOT))>0){
+            if(o1[0].toLowerCase().compareTo(o2[0].toLowerCase())>0){
                 return 1;
-            }else if(o1[0].toLowerCase().compareTo(o2[0].toLowerCase(Locale.ROOT))<0){
+            }else if(o1[0].toLowerCase().compareTo(o2[0].toLowerCase())<0){
                 return -1;
             }else{
-                if(Integer.parseInt(o1[1]) > Integer.parseInt(o2[1])){
+                if(Integer.parseInt(o1[1])> Integer.parseInt(o2[1])){
                     return 1;
-                }else if(Integer.parseInt(o1[1]) < Integer.parseInt(o2[1])){
+                }else if(Integer.parseInt(o1[1])<Integer.parseInt(o2[1])){
                     return -1;
                 }else{
                     return 0;
