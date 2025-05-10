@@ -4,12 +4,12 @@ class Solution {
         int answer = 0;
         int start = 0;
         
-        Deque<Integer> queue = new ArrayDeque<>();
+        Deque<Integer> queue= new ArrayDeque<>();
         queue.add(start);
         
         for(int num : numbers){
             int len = queue.size();
-            for(int i =0; i < len; i++){
+            for(int i =0; i< len; i++){
                 int val = queue.remove();
                 queue.add(val + num);
                 queue.add(val - num);
