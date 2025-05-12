@@ -3,9 +3,9 @@ class Solution {
     public int solution(int n, int[][] computers) {
         int cnt = 0;
         boolean[] visited = new boolean[n];
-        for(int i =0; i<n; i++){
+        for(int i =0; i < n; i++){
             if(!visited[i]){
-                bfs(computers,visited, i);
+                bfs(computers,visited,i);
                 cnt++;
             }
         }
