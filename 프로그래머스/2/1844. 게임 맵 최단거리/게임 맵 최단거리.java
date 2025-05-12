@@ -5,8 +5,8 @@ class Solution {
     public int solution(int[][] maps) {
         int answer = 0;
         int[][] visited = new int[maps.length][maps[0].length];
-        bfs(maps, visited);
-        answer = visited[maps.length-1][maps[0].length-1];
+        bfs(maps,visited);
+        answer = visited[maps.length-1][maps[0].length -1];
         if(answer == 0){
             answer = -1;
         }
@@ -28,7 +28,7 @@ class Solution {
                 int nX = cX + dx[i];
                 int nY = cY + dy[i];
                 
-                if(nX < 0 || nX > maps.length -1 || nY <0 || nY >maps[0].length -1){
+                if(nX < 0 || nX > maps.length - 1 || nY < 0 || nY > maps[0].length -1){
                     continue;
                 }
                 if(maps[nX][nY] == 1 && visited[nX][nY] == 0){
