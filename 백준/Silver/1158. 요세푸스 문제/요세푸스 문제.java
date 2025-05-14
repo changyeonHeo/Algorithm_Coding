@@ -6,23 +6,21 @@ public class Main{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         StringBuilder sb = new StringBuilder();
-        
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
         
         LinkedList<Integer> list = new LinkedList<>();
-        
-        for(int i =1; i<=n; i++){
+        for(int i =1; i <= n; i++){
             list.add(i);
         }
         sb.append('<');
         while(!list.isEmpty()){
-            for(int i =0; i <m;i++){
+            for(int i =0; i <m; i++){
                 if(i == m-1){
                     if(list.size() == 1){
                         sb.append(list.remove());
                     }else{
-                        sb.append(list.remove() + ", ");
+                        sb.append(list.remove()+", ");
                     }
                 }else{
                     list.add(list.remove());
@@ -30,6 +28,6 @@ public class Main{
             }
         }
         sb.append('>');
-        System.out.println(sb);
+        System.out.print(sb);
     }
 }
