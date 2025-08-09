@@ -1,39 +1,37 @@
-import java.util.*;
 class Solution {
+    public boolean[] visited;
+    public int answer = 0;
     public int solution(String begin, String target, String[] words) {
-        int answer = 0;
-        Queue<String> queue = new LinkedList<>();
-        Set<String> set = new HashSet<>(Arrays.asList(words));
-        if(!set.contains(target)){
-            return 0;
-        }
-        queue.offer(begin);
-        set.remove(begin);
-        
-        while(!queue.isEmpty()){
-            for(int i =0; i < queue.size(); i++){
-                String current = queue.poll();
-                if(current.equals(target)){
-                    return answer;
-                }
-                for(String word : set.toArray(new String[set.size()])){
-                    if(canConvert(current, word)){
-                        queue.offer(word);
-                        set.remove(word);
-                    }
-                }
-            }
-            answer++;
-        }
-        return 0;
+        visited = new boolean[words.length];
+        DFS(begin, target, words, 0);
+        return answer;
     }
-    private boolean canConvert(String word1, String word2){
-        int diffCnt = 0;
-        for(int i =0; i <word1.length(); i++){
-            if(word1.charAt(i) != word2.charAt(i)){
-                diffCnt++;
+    
+    public void DFS(String cur, String target, String[] words, int cnt){
+        if(cur.equals(target)){
+            answer = cnt;
+            return;
+        }
+        
+        for(int i =0; i < words.length; i++){
+            if(visited[i]){
+                continue;
+            }
+            if(canConvert(cur,words[i])){
+                visited[i] = true;
+                DFS(words[i],target,words,cnt+1);
+                visited[i] = false;
             }
         }
-        return diffCnt == 1;
+    }
+    
+    public boolean canConvert(String from, String to){
+        int cnt = 0;
+        for(int i =0; i < from.length(); i++){
+            if(from.charAt(i) == to.charAt(i)){
+                cnt++;
+            }
+        }
+        return from.length() == cnt + 1 ? true : false;
     }
 }
